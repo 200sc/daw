@@ -3,11 +3,11 @@ package main
 import (
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 )
 
 func main() {
-	data := make([]byte, digitalaudio.BufferLength(digitalaudio.DefaultFormat))
+	data := make([]byte, daw.BufferLength(daw.DefaultFormat))
 	v := 0
 	dir := 1
 	for i := range data {
@@ -17,7 +17,7 @@ func main() {
 			dir *= -1
 		}
 	}
-	viz := digitalaudio.VisualWriter(digitalaudio.DefaultFormat)
+	viz := daw.VisualWriter(daw.DefaultFormat)
 	viz.WritePCM(data)
 	time.Sleep(5 * time.Second)
 }

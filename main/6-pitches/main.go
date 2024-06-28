@@ -5,15 +5,15 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	daw "github.com/200sc/daw"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
-	data := make([]byte, digitalaudio.BufferLength(format))
-	pitch := digitalaudio.C4
+	data := make([]byte, daw.BufferLength(format))
+	pitch := daw.C4
 	samples := make([]int32, len(data)/4)
 	for i := range samples {
 		v := math.Sin(modPhase(pitch, i, format.SampleRate))
@@ -38,11 +38,11 @@ func main() {
 	time.Sleep(5 * time.Second)
 }
 
-func phase(freq digitalaudio.Pitch, i int, sampleRate uint32) float64 {
+func phase(freq daw.Pitch, i int, sampleRate uint32) float64 {
 	return float64(freq) * (float64(i) / float64(sampleRate)) * 2 * math.Pi
 }
 
-func modPhase(freq digitalaudio.Pitch, i int, sampleRate uint32) float64 {
+func modPhase(freq daw.Pitch, i int, sampleRate uint32) float64 {
 	return math.Mod(phase(freq, i, sampleRate), 2*math.Pi)
 }
 

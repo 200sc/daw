@@ -1,7 +1,14 @@
 package main
 
-import digitalaudio "github.com/200sc/digital-audio"
+import (
+	"io"
+
+	"github.com/200sc/daw"
+)
 
 func main() {
-	digitalaudio.Write([]byte{1})
+	// DAW = Digital Audio Workstation
+	daw.Main(func(w io.Writer) {
+		w.Write([]byte{1})
+	})
 }

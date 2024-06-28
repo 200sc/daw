@@ -1,4 +1,4 @@
-package digitalaudio
+package daw
 
 import "github.com/oakmound/oak/v4/audio/synth"
 

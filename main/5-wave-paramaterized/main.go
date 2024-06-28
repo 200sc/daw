@@ -5,14 +5,14 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
-	data := make([]byte, digitalaudio.BufferLength(format))
+	data := make([]byte, daw.BufferLength(format))
 	v := int32(0)
 	// try lowering this
 	//mod := int32(12800000)

@@ -5,36 +5,36 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
 	data := make([]byte, 44100*2*10)
 
-	//data := make([]byte, digitalaudio.BufferLength(format))
-	pitches := []digitalaudio.Pitch{
-		digitalaudio.D4,
-		digitalaudio.E4,
-		digitalaudio.F4,
-		digitalaudio.F4,
-		digitalaudio.E4,
-		digitalaudio.E4,
-		digitalaudio.E4,
-		digitalaudio.E4,
-		digitalaudio.E4,
-		digitalaudio.E4,
+	//data := make([]byte, daw.BufferLength(format))
+	pitches := []daw.Pitch{
+		daw.D4,
+		daw.E4,
+		daw.F4,
+		daw.F4,
+		daw.E4,
+		daw.E4,
+		daw.E4,
+		daw.E4,
+		daw.E4,
+		daw.E4,
 	}
 	vals := make([]int32, len(data)/8)
 	i := 0
 	for _, pitch := range pitches {
 		pitch := pitch
 		for j := 0; j < len(vals)/len(pitches); j++ {
-			v := math.Sin(digitalaudio.ModPhase(pitch, i, format.SampleRate))
-			vals[i] = digitalaudio.VolumeI32(v, .05)
+			v := math.Sin(daw.ModPhase(pitch, i, format.SampleRate))
+			vals[i] = daw.VolumeI32(v, .05)
 			i++
 		}
 	}
@@ -52,7 +52,7 @@ func main() {
 		}
 	}
 
-	go digitalaudio.Loop(viz, &pcm.IOReader{
+	go daw.Loop(viz, &pcm.IOReader{
 		Format: format,
 		Reader: bytes.NewReader(data),
 	})

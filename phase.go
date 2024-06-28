@@ -1,4 +1,4 @@
-package digitalaudio
+package daw
 
 import (
 	"math"

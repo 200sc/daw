@@ -5,19 +5,19 @@ import (
 	"math"
 	"os"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 	"github.com/oakmound/oak/v4/audio/synth"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
-	pitch := new(digitalaudio.Pitch)
-	*pitch = digitalaudio.C5
+	pitch := new(daw.Pitch)
+	*pitch = daw.C5
 
-	go digitalaudio.Loop(viz, &pitchReader{
+	go daw.Loop(viz, &pitchReader{
 		Format: format,
 		pitch:  pitch,
 	})
@@ -34,15 +34,15 @@ func main() {
 }
 
 type pitchReader struct {
-	pitch *digitalaudio.Pitch
+	pitch *daw.Pitch
 	phase int
 	pcm.Format
 }
 
 func (pr *pitchReader) nextI32() int32 {
 	pr.phase++
-	v := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
-	return digitalaudio.VolumeI32(v, .05)
+	v := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+	return daw.VolumeI32(v, .05)
 }
 
 func (pr *pitchReader) ReadPCM(data []byte) (n int, err error) {

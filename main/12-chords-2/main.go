@@ -4,14 +4,14 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
+	format := daw.DefaultFormat
 
-	pitches := digitalaudio.MinorMajorSeventh.WithRoot(digitalaudio.C5)
+	pitches := daw.MinorMajorSeventh.WithRoot(daw.C5)
 	for _, pitch := range pitches {
 		pitch := pitch
 		pr := &pitchReader{
@@ -19,18 +19,18 @@ func main() {
 			pitch:  &pitch,
 			volume: 0.05,
 			waveFunc: func(pr *pitchReader) float64 {
-				f := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+				f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
 				return f * pr.volume
 			},
 		}
-		w := digitalaudio.NewWriter()
-		go digitalaudio.Loop(w, pr)
+		w := daw.NewWriter()
+		go daw.Loop(w, pr)
 	}
 	time.Sleep(10 * time.Second)
 }
 
 type pitchReader struct {
-	pitch    *digitalaudio.Pitch
+	pitch    *daw.Pitch
 	phase    int
 	volume   float64
 	waveFunc func(*pitchReader) float64

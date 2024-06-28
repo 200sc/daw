@@ -1,4 +1,4 @@
-package digitalaudio
+package daw
 
 import (
 	"context"
@@ -25,6 +25,30 @@ func init() {
 	}
 }
 
+func Play(ctx context.Context, r pcm.Reader) error {
+	return audio.Play(ctx, r)
+}
+
+func Main(fn func(io.Writer)) {
+	w := NewWriter()
+	ioW := NotAnIOWriter{w}
+	fn(ioW)
+}
+
+func VisualMain(fn func(io.Writer)) {
+	viz := VisualWriter(DefaultFormat)
+	ioW := NotAnIOWriter{viz}
+	fn(ioW)
+}
+
+type NotAnIOWriter struct {
+	Writer
+}
+
+func (w NotAnIOWriter) Write(b []byte) (n int, err error) {
+	return w.WritePCM(b)
+}
+
 func Write(data []byte) (int, error) {
 	return NewWriter().WritePCM(data)
 }
@@ -38,8 +62,6 @@ type Writer interface {
 	PCMFormat() pcm.Format
 	WritePCM([]byte) (n int, err error)
 }
-
-var writer Writer
 
 func NewWriter() Writer {
 	return audio.MustNewWriter(DefaultFormat)

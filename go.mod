@@ -1,4 +1,4 @@
-module github.com/200sc/digital-audio
+module github.com/200sc/daw
 
 go 1.20
 

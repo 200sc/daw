@@ -5,34 +5,34 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 )
 
 type Note struct {
-	Pitch    digitalaudio.Pitch
+	Pitch    daw.Pitch
 	Duration time.Duration
 }
 
 const beatsPerMinute = 116
 
 const (
-	beatSixteenthNote = 1
-	beatEighthNote    = 2
-	beatQuarterNote   = 4
-	beatHalfNote      = 8
-	beatWholeNote     = 16
+	sixteenthNote = 1
+	eighthNote    = 2
+	quarterNote   = 4
+	halfNote      = 8
+	wholeNote     = 16
 )
 
 // assuming 4/4
 // beatQuarterNote * beatsPerMinute = time.Minute
-const sixteenthInterval = (time.Minute / beatQuarterNote) / beatsPerMinute
+const sixteenthInterval = (time.Minute / quarterNote) / beatsPerMinute
 
 func beatToDuration(beat int) time.Duration {
 	return sixteenthInterval * time.Duration(beat)
 }
 
-func chordNotes(root digitalaudio.Pitch, chord digitalaudio.Chord, beats int) []Note {
+func chordNotes(root daw.Pitch, chord daw.Chord, beats int) []Note {
 	pitches := chord.WithRoot(root)
 	notes := make([]Note, len(pitches))
 	for i, p := range pitches {
@@ -54,55 +54,55 @@ func rest(beats int) []Note {
 }
 
 func main() {
-	format := digitalaudio.DefaultFormat
+	format := daw.DefaultFormat
 
 	notes := [][]Note{
 		// Measure
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
-		rest(beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		rest(eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
 		// Measure
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.B5, digitalaudio.MinorTriad, beatEighthNote),
-		chordNotes(digitalaudio.B5, digitalaudio.MinorTriad, beatQuarterNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.B5, daw.MinorTriad, eighthNote),
+		chordNotes(daw.B5, daw.MinorTriad, quarterNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
 		// Measure
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.D5, digitalaudio.MajorTriad, beatEighthNote+beatWholeNote), // key I chord
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.D5, daw.MajorTriad, eighthNote+wholeNote), // key I chord
 		// Measure
 		// (Measure in whole note above)
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
-		rest(beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		rest(eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
 		// Measure
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.D6, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.Chord{digitalaudio.Perfect4, digitalaudio.Major6}, beatQuarterNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.D6, daw.MajorTriad, eighthNote),
+		chordNotes(daw.A5, daw.Chord{daw.Perfect4, daw.Major6}, quarterNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
 		// Measure
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.G5, digitalaudio.MajorTriad, beatEighthNote+beatSixteenthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatEighthNote),
-		chordNotes(digitalaudio.A5, digitalaudio.MajorTriad, beatQuarterNote),
-		chordNotes(digitalaudio.C5s, digitalaudio.Chord{digitalaudio.Minor3, digitalaudio.Minor6}, beatQuarterNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		chordNotes(daw.C5s, daw.Chord{daw.Minor3, daw.Minor6}, quarterNote),
 		// Measure
-		chordNotes(digitalaudio.D5s, digitalaudio.Chord{digitalaudio.Minor3, digitalaudio.Minor6}, beatWholeNote),
+		chordNotes(daw.D5s, daw.Chord{daw.Minor3, daw.Minor6}, wholeNote),
 	}
 
 	for _, ns := range notes {
-		// assumption; all ns have same duration
+		// assumption; all notes within a chord have same duration
 		ctx, cancel := context.WithTimeout(context.Background(), ns[0].Duration-10*time.Millisecond)
 		defer cancel()
 		for _, n := range ns {
@@ -115,21 +115,21 @@ func main() {
 				pitch:  &pitch,
 				volume: 0.05,
 				waveFunc: func(pr *pitchReader) float64 {
-					return pr.volume - (pr.volume / math.Pi * digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
+					return pr.volume - (pr.volume / math.Pi * daw.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
 
-					//f := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+					//f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
 					//return f * pr.volume
 				},
 			}
-			w := digitalaudio.NewWriter()
-			go digitalaudio.LoopContext(ctx, w, pr)
+			w := daw.NewWriter()
+			go daw.LoopContext(ctx, w, pr)
 		}
 		time.Sleep(ns[0].Duration)
 	}
 }
 
 type pitchReader struct {
-	pitch    *digitalaudio.Pitch
+	pitch    *daw.Pitch
 	phase    int
 	volume   float64
 	waveFunc func(*pitchReader) float64

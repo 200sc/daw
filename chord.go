@@ -1,4 +1,4 @@
-package digitalaudio
+package daw
 
 // A chord is a series of intervals implicitly including the root interval
 type Chord []Step

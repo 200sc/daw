@@ -4,15 +4,15 @@ import (
 	"math/rand"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 )
 
 func main() {
-	data := make([]byte, digitalaudio.BufferLength(digitalaudio.DefaultFormat))
+	data := make([]byte, daw.BufferLength(daw.DefaultFormat))
 	for i := range data {
 		data[i] = byte((rand.Float64() - .5) * 5)
 	}
-	viz := digitalaudio.VisualWriter(digitalaudio.DefaultFormat)
+	viz := daw.VisualWriter(daw.DefaultFormat)
 	viz.WritePCM(data)
 	time.Sleep(5 * time.Second)
 }

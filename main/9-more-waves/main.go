@@ -5,29 +5,29 @@ import (
 	"math"
 	"os"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 	"github.com/oakmound/oak/v4/audio/synth"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
-	pitch := new(digitalaudio.Pitch)
-	*pitch = digitalaudio.C5
+	pitch := new(daw.Pitch)
+	*pitch = daw.C5
 
 	pr := &pitchReader{
 		Format: format,
 		pitch:  pitch,
 		volume: 0.05,
 		waveFunc: func(pr *pitchReader) float64 {
-			f := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+			f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
 			return f * pr.volume
 		},
 	}
 
-	go digitalaudio.Loop(viz, pr)
+	go daw.Loop(viz, pr)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		switch scanner.Text() {
@@ -37,7 +37,7 @@ func main() {
 			*pitch = (*pitch).Down(synth.HalfStep)
 		case "triangle":
 			pr.waveFunc = func(pr *pitchReader) float64 {
-				p := digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate)
+				p := daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate)
 				m := p * (2 * pr.volume / math.Pi)
 				if math.Sin(p) > 0 {
 					return -pr.volume + m
@@ -45,16 +45,16 @@ func main() {
 				return 3*pr.volume - m
 			}
 		case "square":
-			// pulse with ratio of 2 
+			// pulse with ratio of 2
 			pr.waveFunc = func(pr *pitchReader) float64 {
-				if math.Sin(digitalaudio.Phase(*pr.pitch, pr.phase, pr.SampleRate)) > 0 {
+				if math.Sin(daw.Phase(*pr.pitch, pr.phase, pr.SampleRate)) > 0 {
 					return pr.volume
 				}
 				return -pr.volume
 			}
 		case "saw":
 			pr.waveFunc = func(pr *pitchReader) float64 {
-				return pr.volume - (pr.volume / math.Pi * digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
+				return pr.volume - (pr.volume / math.Pi * daw.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
 			}
 		}
 	}
@@ -62,7 +62,7 @@ func main() {
 }
 
 type pitchReader struct {
-	pitch    *digitalaudio.Pitch
+	pitch    *daw.Pitch
 	phase    int
 	volume   float64
 	waveFunc func(*pitchReader) float64

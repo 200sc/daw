@@ -4,24 +4,24 @@ import (
 	"math"
 	"time"
 
-	digitalaudio "github.com/200sc/digital-audio"
+	"github.com/200sc/daw"
 	"github.com/oakmound/oak/v4/audio/pcm"
 	"github.com/oakmound/oak/v4/audio/synth"
 )
 
 func main() {
-	format := digitalaudio.DefaultFormat
-	viz := digitalaudio.VisualWriter(format)
+	format := daw.DefaultFormat
+	viz := daw.VisualWriter(format)
 
-	pitch := new(digitalaudio.Pitch)
-	*pitch = digitalaudio.C5
+	pitch := new(daw.Pitch)
+	*pitch = daw.C5
 
 	pr := &pitchReader{
 		Format: format,
 		pitch:  pitch,
 		volume: 0.05,
 		waveFunc: func(pr *pitchReader) float64 {
-			f := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+			f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
 			return f * pr.volume
 		},
 	}
@@ -30,26 +30,26 @@ func main() {
 	halfDown := pitch2.Down(synth.HalfStep)
 	rawDelta := float64(int16(pitch2) - int16(halfDown))
 	delta := rawDelta * .2
-	pitch2 = digitalaudio.Pitch(float64(pitch2) + delta)
+	pitch2 = daw.Pitch(float64(pitch2) + delta)
 
 	pr2 := &pitchReader{
 		Format: format,
 		pitch:  &pitch2,
 		volume: 0.05,
 		waveFunc: func(pr *pitchReader) float64 {
-			f := math.Sin(digitalaudio.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
+			f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
 			return f * pr.volume
 		},
 	}
-	w2 := digitalaudio.NewWriter()
-	go digitalaudio.Loop(w2, pr2)
+	w2 := daw.NewWriter()
+	go daw.Loop(w2, pr2)
 
-	go digitalaudio.Loop(viz, pr)
+	go daw.Loop(viz, pr)
 	time.Sleep(10 * time.Second)
 }
 
 type pitchReader struct {
-	pitch    *digitalaudio.Pitch
+	pitch    *daw.Pitch
 	phase    int
 	volume   float64
 	waveFunc func(*pitchReader) float64
