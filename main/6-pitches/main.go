@@ -13,11 +13,12 @@ func main() {
 	viz := daw.VisualWriter(format)
 
 	data := make([]byte, daw.BufferLength(format))
-	pitch := daw.C4
+	pitch := daw.A7
 	samples := make([]int32, len(data)/4)
+	volume := .15 * math.MaxInt32
 	for i := range samples {
 		v := math.Sin(modPhase(pitch, i, format.SampleRate))
-		samples[i] = int32((v * .05) * math.MaxInt32)
+		samples[i] = int32((v * volume))
 	}
 
 	bytesPerI32 := int(format.Channels) * 4

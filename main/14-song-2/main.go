@@ -2,17 +2,10 @@ package main
 
 import (
 	"context"
-	"math"
 	"time"
 
 	"github.com/200sc/daw"
-	"github.com/oakmound/oak/v4/audio/pcm"
 )
-
-type Note struct {
-	Pitch    daw.Pitch
-	Duration time.Duration
-}
 
 const beatsPerMinute = 116
 
@@ -25,11 +18,26 @@ const (
 )
 
 // assuming 4/4
-// beatQuarterNote * beatsPerMinute = time.Minute
-const sixteenthInterval = (time.Minute / quarterNote) / beatsPerMinute
+// quarterNote * beatsPerMinute = time.Minute
+const quarterInterval = time.Minute / beatsPerMinute
+const sixteenthInterval = quarterInterval / 4
 
 func beatToDuration(beat int) time.Duration {
 	return sixteenthInterval * time.Duration(beat)
+}
+
+type Note struct {
+	Pitch    daw.Pitch
+	Duration time.Duration
+}
+
+func rest(beats int) []Note {
+	return []Note{
+		{
+			// No pitch == rest
+			Duration: beatToDuration(beats),
+		},
+	}
 }
 
 func chordNotes(root daw.Pitch, chord daw.Chord, beats int) []Note {
@@ -42,15 +50,6 @@ func chordNotes(root daw.Pitch, chord daw.Chord, beats int) []Note {
 		}
 	}
 	return notes
-}
-
-func rest(beats int) []Note {
-	return []Note{
-		{
-			// No pitch == rest
-			Duration: beatToDuration(beats),
-		},
-	}
 }
 
 func main() {
@@ -110,48 +109,15 @@ func main() {
 			if pitch == 0 {
 				continue
 			}
-			pr := &pitchReader{
-				Format: format,
-				pitch:  &pitch,
-				volume: 0.05,
-				waveFunc: func(pr *pitchReader) float64 {
-					return pr.volume - (pr.volume / math.Pi * daw.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
-
-					//f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
-					//return f * pr.volume
-				},
+			pr := &daw.PitchReader{
+				Format:   format,
+				Pitch:    &pitch,
+				Volume:   0.05,
+				WaveFunc: daw.SawFunc,
 			}
 			w := daw.NewWriter()
 			go daw.LoopContext(ctx, w, pr)
 		}
 		time.Sleep(ns[0].Duration)
 	}
-}
-
-type pitchReader struct {
-	pitch    *daw.Pitch
-	phase    int
-	volume   float64
-	waveFunc func(*pitchReader) float64
-	pcm.Format
-}
-
-func (pr *pitchReader) nextI32() int32 {
-	pr.phase++
-	return int32(pr.waveFunc(pr) * math.MaxInt32)
-}
-
-func (pr *pitchReader) ReadPCM(data []byte) (n int, err error) {
-	bytesPerI32 := int(pr.Format.Channels) * 4
-	for i := 0; i+bytesPerI32 <= len(data); i += bytesPerI32 {
-		i32 := pr.nextI32()
-		for c := 0; c < int(pr.Format.Channels); c++ {
-			data[i+(4*c)] = byte(i32)
-			data[i+(4*c)+1] = byte(i32 >> 8)
-			data[i+(4*c)+2] = byte(i32 >> 16)
-			data[i+(4*c)+3] = byte(i32 >> 24)
-		}
-		n += 4 * int(pr.Format.Channels)
-	}
-	return n, nil
 }

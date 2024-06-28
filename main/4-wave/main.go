@@ -1,23 +1,26 @@
 package main
 
 import (
+	"io"
 	"time"
 
 	"github.com/200sc/daw"
 )
 
 func main() {
-	data := make([]byte, daw.BufferLength(daw.DefaultFormat))
-	v := 0
-	dir := 1
-	for i := range data {
-		data[i] = byte(v)
-		v += dir
-		if v > 50 || v < -50 {
-			dir *= -1
+	daw.VisualMain(func(w io.Writer) {
+		data := make([]byte, daw.BufferLength(daw.DefaultFormat))
+		v := 0.0
+		delta := 0.5
+		const volume = 25
+		for i := range data {
+			data[i] = byte(v)
+			v += delta
+			if v > volume || v < -volume {
+				delta *= -1
+			}
 		}
-	}
-	viz := daw.VisualWriter(daw.DefaultFormat)
-	viz.WritePCM(data)
-	time.Sleep(5 * time.Second)
+		w.Write(data)
+		time.Sleep(10 * time.Second)
+	})
 }

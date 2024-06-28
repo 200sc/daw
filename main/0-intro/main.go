@@ -11,7 +11,7 @@ func main() {
 
 
 
-	Talk by Patrick Stephen, Senior Software Engineer at StrongDM
+	Talk by Patrick Stephen, Senior Software Engineer at StrongDM (patrick.d.stephen@gmail.com)
 	`)
 
 	fmt.Println(`

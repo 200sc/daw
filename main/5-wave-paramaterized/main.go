@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"time"
 
 	"github.com/200sc/daw"
 )
+
+// Volume = Wave Height = Amplitude
+// Pitch = Pattern Size = Frequency
 
 func main() {
 	format := daw.DefaultFormat
@@ -18,11 +20,11 @@ func main() {
 	//mod := int32(12800000)
 	mod := int32(3200000)
 	samples := make([]int32, len(data)/4)
-	limit := int32(math.MaxInt32 / 4)
+	volume := int32(math.MaxInt32 / 4)
 	for i := range samples {
 		samples[i] = v
 		v += mod
-		if v > limit || v < -limit {
+		if v > volume || v < -volume {
 			mod *= -1
 		}
 	}
@@ -41,6 +43,5 @@ func main() {
 	}
 
 	viz.WritePCM(data)
-	fmt.Println(data[:100])
 	time.Sleep(5 * time.Second)
 }

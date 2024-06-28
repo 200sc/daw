@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"math/rand"
 	"time"
 
@@ -8,15 +9,13 @@ import (
 )
 
 func main() {
-	data := make([]byte, daw.BufferLength(daw.DefaultFormat))
-	for i := range data {
-		data[i] = byte((rand.Float64() - .5) * 5)
-	}
-	viz := daw.VisualWriter(daw.DefaultFormat)
-	viz.WritePCM(data)
-	time.Sleep(5 * time.Second)
+	daw.VisualMain(func(w io.Writer) {
+		data := make([]byte, daw.BufferLength(daw.DefaultFormat))
+		const volume = 50
+		for i := range data {
+			data[i] = byte((rand.Float64() - .5) * volume)
+		}
+		w.Write(data)
+		time.Sleep(10 * time.Second)
+	})
 }
-
-// SampleRate: 44100,
-// Channels:   2,
-// Bits:       32,

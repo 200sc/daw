@@ -24,8 +24,6 @@ func main() {
 			data[i] = 75
 		}
 		w.Write(data)
-		time.Sleep(5 * time.Second)
+		time.Sleep(15 * time.Second)
 	})
 }
-
-// Lesson 1: the bigger the number, the louder the output
