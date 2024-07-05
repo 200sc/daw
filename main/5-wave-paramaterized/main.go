@@ -12,7 +12,6 @@ import (
 
 func main() {
 	format := daw.DefaultFormat
-	viz := daw.VisualWriter(format)
 
 	data := make([]byte, daw.BufferLength(format))
 	v := int32(0)
@@ -42,6 +41,11 @@ func main() {
 		}
 	}
 
-	viz.WritePCM(data)
-	time.Sleep(5 * time.Second)
+	ch := make(chan daw.Writer)
+	go func() {
+		w := <-ch
+		w.WritePCM(data)
+		time.Sleep(5 * time.Second)
+	}()
+	daw.VisualWriter(format, ch)
 }

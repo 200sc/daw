@@ -6,7 +6,6 @@ import (
 	"image/draw"
 	"io"
 	"math"
-	"sync"
 
 	oak "github.com/oakmound/oak/v4"
 	"github.com/oakmound/oak/v4/audio"
@@ -36,9 +35,13 @@ func Main(fn func(io.Writer)) {
 }
 
 func VisualMain(fn func(io.Writer)) {
-	viz := VisualWriter(DefaultFormat)
-	ioW := NotAnIOWriter{viz}
-	fn(ioW)
+	ch := make(chan Writer)
+	go func() {
+		viz := <-ch
+		ioW := NotAnIOWriter{viz}
+		fn(ioW)
+	}()
+	VisualWriter(DefaultFormat, ch)
 }
 
 type NotAnIOWriter struct {
@@ -81,28 +84,22 @@ func BufferLength(format pcm.Format) uint32 {
 	return uint32(float64(format.BytesPerSecond()) * audio.WriterBufferLengthInSeconds)
 }
 
-func VisualWriter(format pcm.Format) Writer {
-	var monitor *pcmMonitor
-
-	var wg sync.WaitGroup
-	wg.Add(1)
+func VisualWriter(format pcm.Format, ch chan Writer) {
 	oak.AddScene("visualizer", scene.Scene{
 		Start: func(ctx *scene.Context) {
 			speaker := audio.MustNewWriter(format)
-			monitor = newPCMMonitor(ctx, speaker)
+			monitor := newPCMMonitor(ctx, speaker)
 			monitor.SetPos(0, 0)
 			render.Draw(monitor)
-			wg.Done()
+			ch <- monitor
 		},
 	})
-	go oak.Init("visualizer", func(c oak.Config) (oak.Config, error) {
+	oak.Init("visualizer", func(c oak.Config) (oak.Config, error) {
 		c.Screen.Height = 240
 		c.Title = "Audio Visualizer"
 		c.Debug.Level = dlog.INFO.String()
 		return c, nil
 	})
-	wg.Wait()
-	return monitor
 }
 
 func PlayTo(dst pcm.Writer, src pcm.Reader) {

@@ -10,7 +10,6 @@ import (
 
 func main() {
 	format := daw.DefaultFormat
-	viz := daw.VisualWriter(format)
 
 	data := make([]byte, daw.BufferLength(format))
 	pitch := daw.A7
@@ -34,9 +33,14 @@ func main() {
 		}
 	}
 
-	viz.WritePCM(data)
-	fmt.Println(data[:100])
-	time.Sleep(5 * time.Second)
+	ch := make(chan daw.Writer)
+	go func() {
+		w := <-ch
+		w.WritePCM(data)
+		fmt.Println(data[:100])
+		time.Sleep(5 * time.Second)
+	}()
+	daw.VisualWriter(format, ch)
 }
 
 func phase(freq daw.Pitch, i int, sampleRate uint32) float64 {

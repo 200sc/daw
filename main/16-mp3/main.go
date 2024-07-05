@@ -20,11 +20,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	vizw := daw.VisualWriter(r.PCMFormat())
-	err = audio.Play(context.Background(), r, func(po *audio.PlayOptions) {
-		po.Destination = vizw
-	})
-	if err != nil {
-		panic(err)
-	}
+	ch := make(chan daw.Writer)
+	go func() {
+		vizw := <-ch
+		err = audio.Play(context.Background(), r, func(po *audio.PlayOptions) {
+			po.Destination = vizw
+		})
+		if err != nil {
+			panic(err)
+		}
+	}()
+	daw.VisualWriter(r.PCMFormat(), ch)
 }

@@ -11,7 +11,6 @@ import (
 
 func main() {
 	format := daw.DefaultFormat
-	viz := daw.VisualWriter(format)
 
 	data := make([]byte, 44100*2*10)
 
@@ -52,9 +51,14 @@ func main() {
 		}
 	}
 
-	go daw.Loop(viz, &pcm.IOReader{
-		Format: format,
-		Reader: bytes.NewReader(data),
-	})
-	time.Sleep(10 * time.Second)
+	ch := make(chan daw.Writer)
+	go func() {
+		w := <-ch
+		go daw.Loop(w, &pcm.IOReader{
+			Format: format,
+			Reader: bytes.NewReader(data),
+		})
+		time.Sleep(10 * time.Second)
+	}()
+	daw.VisualWriter(format, ch)
 }

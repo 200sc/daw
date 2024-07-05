@@ -10,7 +10,6 @@ import (
 
 func main() {
 	format := daw.DefaultFormat
-	viz := daw.VisualWriter(format)
 
 	pitch := new(daw.Pitch)
 	*pitch = daw.C5
@@ -28,7 +27,7 @@ func main() {
 	pitch2 := *pitch
 	halfDown := pitch2.Down(synth.HalfStep)
 	rawDelta := float64(int16(pitch2) - int16(halfDown))
-	delta := rawDelta * .2
+	delta := rawDelta * .20
 	pitch2 = daw.Pitch(float64(pitch2) + delta)
 
 	pr2 := &daw.PitchReader{
@@ -41,8 +40,13 @@ func main() {
 		},
 	}
 	w2 := daw.NewWriter()
-	go daw.Loop(w2, pr2)
 
-	go daw.Loop(viz, pr)
-	time.Sleep(20 * time.Second)
+	ch := make(chan daw.Writer)
+	go func() {
+		w := <-ch
+		go daw.Loop(w2, pr2)
+		go daw.Loop(w, pr)
+		time.Sleep(20 * time.Second)
+	}()
+	daw.VisualWriter(format, ch)
 }
