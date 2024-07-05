@@ -27,12 +27,11 @@
 // Please use C89 style variable declarations in this file because VS 2010
 //========================================================================
 
+#include "internal.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
-#include "internal.h"
-
 
 static void makeContextCurrentOSMesa(_GLFWwindow* window)
 {
@@ -124,6 +123,8 @@ GLFWbool _glfwInitOSMesa(void)
         "libOSMesa.8.dylib",
 #elif defined(__CYGWIN__)
         "libOSMesa-8.so",
+#elif defined(__OpenBSD__) || defined(__NetBSD__)
+        "libOSMesa.so",
 #else
         "libOSMesa.so.8",
         "libOSMesa.so.6",

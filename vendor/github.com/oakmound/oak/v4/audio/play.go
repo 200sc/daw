@@ -90,7 +90,7 @@ func Play(ctx context.Context, src pcm.Reader, options ...PlayOption) error {
 	}
 	format := opts.Destination.PCMFormat()
 	if !opts.AllowMismatchedFormats {
-		if src.PCMFormat() != format {
+		if srcFormat := src.PCMFormat(); srcFormat != format {
 			return ErrMismatchedPCMFormat
 		}
 	}

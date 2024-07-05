@@ -1,4 +1,4 @@
-# dmitri.shuralyov.com/gpu/mtl v0.0.0-20201218220906-28db891af037
+# dmitri.shuralyov.com/gpu/mtl v0.0.0-20221208032759-85de2813cf6b
 ## explicit
 dmitri.shuralyov.com/gpu/mtl
 # github.com/BurntSushi/xgb v0.0.0-20210121224620-deaf085860bc
@@ -19,7 +19,7 @@ github.com/BurntSushi/xgbutil/xprop
 # github.com/disintegration/gift v1.2.1
 ## explicit
 github.com/disintegration/gift
-# github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958
+# github.com/go-gl/glfw/v3.3/glfw v0.0.0-20240506104042-037f3cc74f2a
 ## explicit; go 1.10
 github.com/go-gl/glfw/v3.3/glfw
 github.com/go-gl/glfw/v3.3/glfw/glfw/deps
@@ -58,7 +58,7 @@ github.com/oakmound/alsa/pcm/state
 ## explicit
 github.com/oakmound/libudev
 github.com/oakmound/libudev/types
-# github.com/oakmound/oak/v4 v4.1.0
+# github.com/oakmound/oak/v4 v4.1.1-0.20240114213108-3b840e64f183
 ## explicit; go 1.18
 github.com/oakmound/oak/v4
 github.com/oakmound/oak/v4/alg
@@ -127,7 +127,7 @@ golang.org/x/exp/shiny/driver/internal/lifecycler
 golang.org/x/exp/shiny/driver/internal/win32
 golang.org/x/exp/shiny/driver/internal/x11key
 golang.org/x/exp/shiny/screen
-# golang.org/x/image v0.0.0-20220321031419-a8550c1d254a
+# golang.org/x/image v0.10.0
 ## explicit; go 1.12
 golang.org/x/image/bmp
 golang.org/x/image/colornames
@@ -150,11 +150,11 @@ golang.org/x/mobile/exp/gl/glutil
 golang.org/x/mobile/geom
 golang.org/x/mobile/gl
 golang.org/x/mobile/internal/mobileinit
-# golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+# golang.org/x/sync v0.1.0
 ## explicit
 golang.org/x/sync/errgroup
 golang.org/x/sync/syncmap
-# golang.org/x/sys v0.0.0-20220403205710-6acee93ad0eb
+# golang.org/x/sys v0.5.0
 ## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/windows
