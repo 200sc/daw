@@ -14,11 +14,9 @@ func main() {
 
 	data := make([]byte, daw.BufferLength(format))
 	v := int32(0)
-	// try lowering this
-	//mod := int32(12800000)
+	mod := int32(12800000)
 	//mod := int32(6400000)
-	//mod := int32(3200000)
-	mod := int32(3900000)
+	//mod := int32(7600000)
 	samples := make([]int32, len(data)/4)
 	volume := int32(math.MaxInt32 / 4)
 	for i := range samples {

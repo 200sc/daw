@@ -31,3 +31,6 @@ now we've got continuous sound, and we've got a variable we can manipulate, so l
 
 We've discovered something new-- pitch. This size value we've written here is alternately, our period-- how often a pattern
 we've chosen is being written to the audio interface. The faster that pattern is written, the higher pitch it outputs.  
+
+
+1m30

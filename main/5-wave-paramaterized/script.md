@@ -32,3 +32,5 @@ and again with 32, it sounds similar
 but with 39 it does not. What we're discovering has a few names, resonance or more commonly in western music, octaves. 
 In western music a given pitch sounds the same as many other pitches, i.e C4 vs C5. These pitches have equivalent freqencies,
 but multiplied or divided by two. 
+
+t: 3m

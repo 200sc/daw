@@ -25,3 +25,5 @@ reached the point where we know enough fundamentals that we can reveal the contr
 Our writer expects us to send it 44.1k samples every second, on two channels, and it expects each sample to have 32 bits
 of data. We can actually change any of these values, but these are reasonable defaults. PCM or Pulse Code Modulation is
 the name for this format, defined in terms of sample rate and bit rate. PCM is the standard for digital audio.
+
+t: 3m

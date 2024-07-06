@@ -5,3 +5,6 @@ We aren't attached to these frequencies we've looked up. We already know we can 
 - run
 
 This is called detuning.
+
+
+t 1m30s

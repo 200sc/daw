@@ -12,9 +12,11 @@ Some final notes on this content:
 2. I am not an audio engineer by trade, so if you're taking this knowledge into a high value scenario I encourage you
    to research, verify, and test thoroughly.
 
-3. There is a lot of complexity lying between this code and the speaker, depending on your operating system. This would
+3. There is a lot of complexity between this code and the speaker, depending on your operating system. This would
    take a lot longer to explain, but it is open source for perusal.
 
 4. What we've coded and demoed here reflects just western music standards; all the pitches, intervals, chords and keys
    are meaningful only in that context. There are other ways to think about music that aren't reflected here which I
    encourage you to explore.
+
+t - 1m30s

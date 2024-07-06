@@ -90,7 +90,7 @@ func VisualWriter(format pcm.Format, ch chan Writer) {
 	oak.Init("visualizer", func(c oak.Config) (oak.Config, error) {
 		c.Screen.Height = 240
 		c.Title = "Audio Visualizer"
-		c.Debug.Level = dlog.INFO.String()
+		c.Debug.Level = dlog.NONE.String()
 		c.TopMost = true
 		return c, nil
 	})

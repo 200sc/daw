@@ -8,9 +8,7 @@ import (
 
 func main() {
 	daw.VisualMain(func(w io.Writer) {
-		for i := 0; i < 100; i++ {
-			writeIncrementing(w, 1250)
-		}
+		writeIncrementing(w, 10000)
 	})
 }
 
