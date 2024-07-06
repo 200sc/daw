@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-	"time"
 
 	"github.com/200sc/daw"
 )
@@ -17,7 +16,9 @@ func main() {
 	v := int32(0)
 	// try lowering this
 	//mod := int32(12800000)
-	mod := int32(3200000)
+	//mod := int32(6400000)
+	//mod := int32(3200000)
+	mod := int32(3900000)
 	samples := make([]int32, len(data)/4)
 	volume := int32(math.MaxInt32 / 4)
 	for i := range samples {
@@ -34,6 +35,10 @@ func main() {
 		i32 := samples[j]
 		j++
 		for c := 0; c < int(format.Channels); c++ {
+			// silence a channel
+			// if c == 1 {
+			// 	i32 = 0
+			// }
 			data[i+(4*c)] = byte(i32)
 			data[i+(4*c)+1] = byte(i32 >> 8)
 			data[i+(4*c)+2] = byte(i32 >> 16)
@@ -45,7 +50,6 @@ func main() {
 	go func() {
 		w := <-ch
 		w.WritePCM(data)
-		time.Sleep(5 * time.Second)
 	}()
 	daw.VisualWriter(format, ch)
 }

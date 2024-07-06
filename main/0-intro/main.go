@@ -11,12 +11,6 @@ func main() {
 
 
 
-	Talk by Patrick Stephen, Senior Software Engineer at StrongDM (patrick.d.stephen@gmail.com)
-	`)
-
-	fmt.Println(`
-	
-	NOTE: I am not an audio engineer
-	
+	Talk by Patrick Stephen, Senior Software Engineer at StrongDM (patrick.d.stephen@gmail.com / github.com/200sc)
 	`)
 }

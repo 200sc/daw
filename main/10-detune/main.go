@@ -27,7 +27,7 @@ func main() {
 	pitch2 := *pitch
 	halfDown := pitch2.Down(synth.HalfStep)
 	rawDelta := float64(int16(pitch2) - int16(halfDown))
-	delta := rawDelta * .20
+	delta := rawDelta * .05 // .05, .1, .2
 	pitch2 = daw.Pitch(float64(pitch2) + delta)
 
 	pr2 := &daw.PitchReader{

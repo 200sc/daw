@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/200sc/daw"
-	"github.com/oakmound/oak/v4/audio/pcm"
 	"github.com/oakmound/oak/v4/audio/synth"
 )
 
@@ -17,13 +16,13 @@ func main() {
 	pitch := new(daw.Pitch)
 	*pitch = daw.C5
 
-	pr := &pitchReader{
+	pr := &daw.PitchReader{
 		Format: format,
-		pitch:  pitch,
-		volume: 0.05,
-		waveFunc: func(pr *pitchReader) float64 {
-			f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
-			return f * pr.volume
+		Pitch:  pitch,
+		Volume: 0.05,
+		WaveFunc: func(pr *daw.PitchReader) float64 {
+			f := math.Sin(daw.ModPhase(*pr.Pitch, pr.Phase, pr.Format.SampleRate))
+			return f * pr.Volume
 		},
 	}
 
@@ -43,61 +42,33 @@ func main() {
 			case "down":
 				*pitch = (*pitch).Down(synth.HalfStep)
 			case "triangle":
-				pr.waveFunc = func(pr *pitchReader) float64 {
-					p := daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate)
-					m := p * (2 * pr.volume / math.Pi)
+				pr.WaveFunc = func(pr *daw.PitchReader) float64 {
+					p := daw.ModPhase(*pr.Pitch, pr.Phase, pr.Format.SampleRate)
+					m := p * (2 * pr.Volume / math.Pi)
 					if math.Sin(p) > 0 {
-						return -pr.volume + m
+						return -pr.Volume + m
 					}
-					return 3*pr.volume - m
+					return 3*pr.Volume - m
 				}
 			case "square":
 				// pulse with ratio of 2
-				pr.waveFunc = func(pr *pitchReader) float64 {
-					if math.Sin(daw.Phase(*pr.pitch, pr.phase, pr.SampleRate)) > 0 {
-						return pr.volume
+				pr.WaveFunc = func(pr *daw.PitchReader) float64 {
+					if math.Sin(daw.Phase(*pr.Pitch, pr.Phase, pr.SampleRate)) > 0 {
+						return pr.Volume
 					}
-					return -pr.volume
+					return -pr.Volume
 				}
 			case "saw":
-				pr.waveFunc = func(pr *pitchReader) float64 {
-					return pr.volume - (pr.volume / math.Pi * daw.ModPhase(*pr.pitch, pr.phase, pr.SampleRate))
+				pr.WaveFunc = func(pr *daw.PitchReader) float64 {
+					return pr.Volume - (pr.Volume / math.Pi * daw.ModPhase(*pr.Pitch, pr.Phase, pr.SampleRate))
 				}
 			case "sin":
-				pr.waveFunc = func(pr *pitchReader) float64 {
-					f := math.Sin(daw.ModPhase(*pr.pitch, pr.phase, pr.Format.SampleRate))
-					return f * pr.volume
+				pr.WaveFunc = func(pr *daw.PitchReader) float64 {
+					f := math.Sin(daw.ModPhase(*pr.Pitch, pr.Phase, pr.Format.SampleRate))
+					return f * pr.Volume
 				}
 			}
 		}
 	}()
 	daw.VisualWriter(format, ch)
-}
-
-type pitchReader struct {
-	pitch    *daw.Pitch
-	phase    int
-	volume   float64
-	waveFunc func(*pitchReader) float64
-	pcm.Format
-}
-
-func (pr *pitchReader) nextI32() int32 {
-	pr.phase++
-	return int32(pr.waveFunc(pr) * math.MaxInt32)
-}
-
-func (pr *pitchReader) ReadPCM(data []byte) (n int, err error) {
-	bytesPerI32 := int(pr.Format.Channels) * 4
-	for i := 0; i+bytesPerI32 <= len(data); i += bytesPerI32 {
-		i32 := pr.nextI32()
-		for c := 0; c < int(pr.Format.Channels); c++ {
-			data[i+(4*c)] = byte(i32)
-			data[i+(4*c)+1] = byte(i32 >> 8)
-			data[i+(4*c)+2] = byte(i32 >> 16)
-			data[i+(4*c)+3] = byte(i32 >> 24)
-		}
-		n += 4 * int(pr.Format.Channels)
-	}
-	return n, nil
 }

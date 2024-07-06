@@ -1,22 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"time"
 
 	daw "github.com/200sc/daw"
 )
 
+func patternProgress(freq daw.Pitch, sample int, sampleRate uint32) float64 {
+	v := float64(freq) * (float64(sample) / float64(sampleRate)) * 2 * math.Pi
+	return math.Mod(v, 2*math.Pi)
+}
+
 func main() {
 	format := daw.DefaultFormat
 
+	//
+	pitch := daw.A4
+	//
+
 	data := make([]byte, daw.BufferLength(format))
-	pitch := daw.A7
 	samples := make([]int32, len(data)/4)
-	volume := .15 * math.MaxInt32
+	volume := .10 * math.MaxInt32
 	for i := range samples {
-		v := math.Sin(modPhase(pitch, i, format.SampleRate))
+		v := math.Sin(patternProgress(pitch, i, format.SampleRate))
 		samples[i] = int32((v * volume))
 	}
 
@@ -37,22 +44,7 @@ func main() {
 	go func() {
 		w := <-ch
 		w.WritePCM(data)
-		fmt.Println(data[:100])
 		time.Sleep(5 * time.Second)
 	}()
 	daw.VisualWriter(format, ch)
 }
-
-func phase(freq daw.Pitch, i int, sampleRate uint32) float64 {
-	return float64(freq) * (float64(i) / float64(sampleRate)) * 2 * math.Pi
-}
-
-func modPhase(freq daw.Pitch, i int, sampleRate uint32) float64 {
-	return math.Mod(phase(freq, i, sampleRate), 2*math.Pi)
-}
-
-// *= math.MaxInt32
-// what happens if we execute?
-// divide by 20
-// phase -> modphase
-// sin

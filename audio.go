@@ -6,6 +6,8 @@ import (
 	"image/draw"
 	"io"
 	"math"
+	"os"
+	"time"
 
 	oak "github.com/oakmound/oak/v4"
 	"github.com/oakmound/oak/v4/audio"
@@ -28,10 +30,13 @@ func Play(ctx context.Context, r pcm.Reader) error {
 	return audio.Play(ctx, r)
 }
 
+var mainWaitFor = 5 * time.Second
+
 func Main(fn func(io.Writer)) {
 	w := NewWriter()
 	ioW := NotAnIOWriter{w}
 	fn(ioW)
+	time.Sleep(mainWaitFor)
 }
 
 func VisualMain(fn func(io.Writer)) {
@@ -40,6 +45,8 @@ func VisualMain(fn func(io.Writer)) {
 		viz := <-ch
 		ioW := NotAnIOWriter{viz}
 		fn(ioW)
+		time.Sleep(mainWaitFor)
+		os.Exit(0)
 	}()
 	VisualWriter(DefaultFormat, ch)
 }
@@ -66,20 +73,6 @@ type Writer interface {
 	WritePCM([]byte) (n int, err error)
 }
 
-func NewWriter() Writer {
-	return audio.MustNewWriter(DefaultFormat)
-}
-
-func NewPCMWriter(format pcm.Format) Writer {
-	return audio.MustNewWriter(format)
-}
-
-var DefaultFormat = pcm.Format{
-	SampleRate: 44100,
-	Channels:   2,
-	Bits:       32,
-}
-
 func BufferLength(format pcm.Format) uint32 {
 	return uint32(float64(format.BytesPerSecond()) * audio.WriterBufferLengthInSeconds)
 }
@@ -98,6 +91,7 @@ func VisualWriter(format pcm.Format, ch chan Writer) {
 		c.Screen.Height = 240
 		c.Title = "Audio Visualizer"
 		c.Debug.Level = dlog.INFO.String()
+		c.TopMost = true
 		return c, nil
 	})
 }

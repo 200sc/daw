@@ -12,9 +12,9 @@ import (
 func main() {
 	format := daw.DefaultFormat
 
-	data := make([]byte, 44100*2*10)
-
+	data := make([]byte, 44100*2*10) // ==
 	//data := make([]byte, daw.BufferLength(format))
+
 	pitches := []daw.Pitch{
 		daw.D4,
 		daw.E4,

@@ -9,11 +9,12 @@ import (
 func main() {
 	format := daw.DefaultFormat
 
-	pitches := []daw.Pitch{
-		daw.C5,
-		daw.E5,
-		daw.G5,
-	}
+	// pitches := []daw.Pitch{
+	// 	daw.C5,
+	// 	daw.E5,
+	// 	daw.G5,
+	// }
+	pitches := daw.MinorMajorSeventh.WithRoot(daw.C5)
 	for _, pitch := range pitches {
 		pitch := pitch
 		pr := &daw.PitchReader{
