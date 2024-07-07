@@ -133,6 +133,10 @@ func newPCMMonitor(ctx *scene.Context, w pcm.Writer) *pcmMonitor {
 		LayeredPoint: render.NewLayeredPoint(0, 0, 0),
 		written:      make([]byte, int(float64(fmt.BytesPerSecond())*audio.WriterBufferLengthInSeconds)),
 	}
+	event.GlobalBind(ctx, mouse.Click, func(_ *mouse.Event) event.Response {
+		globalMagnification = 20
+		return 0
+	})
 	event.GlobalBind(ctx, mouse.ScrollDown, func(_ *mouse.Event) event.Response {
 		mag := globalMagnification - 0.5
 		if mag < 1 {
