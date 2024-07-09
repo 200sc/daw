@@ -94,13 +94,13 @@ func main() {
 		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
 		chordNotes(daw.D6, daw.MajorTriad, eighthNote),
 		chordNotes(daw.A5, daw.Chord{daw.Perfect4, daw.Major6}, quarterNote),
-		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		chordNotes(daw.D6, daw.MajorTriad, quarterNote),
 
 		// Measure
-		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
-		chordNotes(daw.G5, daw.MajorTriad, eighthNote+sixteenthNote),
-		chordNotes(daw.A5, daw.MajorTriad, eighthNote),
-		chordNotes(daw.A5, daw.MajorTriad, quarterNote),
+		chordNotes(daw.C6s, daw.Chord{daw.Minor3, daw.Minor6}, eighthNote+sixteenthNote),
+		chordNotes(daw.A5, daw.MajorTriad, eighthNote+sixteenthNote),
+		chordNotes(daw.G5, daw.MajorTriad, eighthNote),
+		chordNotes(daw.G5, daw.MajorTriad, quarterNote),
 		chordNotes(daw.C5s, daw.Chord{daw.Minor3, daw.Minor6}, quarterNote),
 
 		// Measure

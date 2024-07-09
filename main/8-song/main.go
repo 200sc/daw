@@ -20,14 +20,14 @@ func main() {
 		daw.E4,
 		daw.F4,
 		daw.F4,
-		daw.E4,
-		daw.E4,
-		daw.E4,
-		daw.E4,
-		daw.E4,
+		daw.B4,
+		daw.A4b,
+		daw.A4b,
+		daw.A4b,
 		daw.E4,
 	}
 	vals := make([]int32, len(data)/8)
+	// 8 == format.Channels*bytesPerInt32
 	i := 0
 	for _, pitch := range pitches {
 		pitch := pitch

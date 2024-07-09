@@ -1,9 +1,5 @@
 package daw
 
-import (
-	"github.com/oakmound/oak/v4/audio/synth"
-)
-
 type Key struct {
 	Start   Pitch
 	Pattern KeyPattern
@@ -12,23 +8,23 @@ type Key struct {
 type KeyPattern []Step
 
 var MajorKey KeyPattern = []Step{
-	synth.WholeStep,
-	synth.WholeStep,
-	synth.HalfStep,
-	synth.WholeStep,
-	synth.WholeStep,
-	synth.WholeStep,
-	synth.HalfStep,
+	WholeStep,
+	WholeStep,
+	HalfStep,
+	WholeStep,
+	WholeStep,
+	WholeStep,
+	HalfStep,
 }
 
 var MinorKey KeyPattern = []Step{
-	synth.WholeStep,
-	synth.HalfStep,
-	synth.WholeStep,
-	synth.WholeStep,
-	synth.HalfStep,
-	synth.WholeStep,
-	synth.WholeStep,
+	WholeStep,
+	HalfStep,
+	WholeStep,
+	WholeStep,
+	HalfStep,
+	WholeStep,
+	WholeStep,
 }
 
 // Note also: Harmonic minor, melodic minor (and usage when descending / ascending)

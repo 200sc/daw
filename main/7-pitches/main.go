@@ -7,7 +7,7 @@ import (
 	daw "github.com/200sc/daw"
 )
 
-func patternProgress(freq daw.Pitch, sample int, sampleRate uint32) float64 {
+func phase(freq daw.Pitch, sample int, sampleRate uint32) float64 {
 	v := float64(freq) * (float64(sample) / float64(sampleRate)) * 2 * math.Pi
 	return math.Mod(v, 2*math.Pi)
 }
@@ -23,7 +23,7 @@ func main() {
 	samples := make([]int32, len(data)/4)
 	volume := .10 * math.MaxInt32
 	for i := range samples {
-		v := math.Sin(patternProgress(pitch, i, format.SampleRate))
+		v := math.Sin(phase(pitch, i, format.SampleRate))
 		samples[i] = int32((v * volume))
 	}
 
