@@ -60,7 +60,8 @@ func main() {
 				}
 			case "saw":
 				pr.WaveFunc = func(pr *daw.PitchReader) float64 {
-					return pr.Volume - (pr.Volume / math.Pi * daw.ModPhase(*pr.Pitch, pr.Phase, pr.SampleRate))
+					p := daw.ModPhase(*pr.Pitch, pr.Phase, pr.SampleRate)
+					return pr.Volume - (pr.Volume / math.Pi * p)
 				}
 			case "sin":
 				pr.WaveFunc = func(pr *daw.PitchReader) float64 {

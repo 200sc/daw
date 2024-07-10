@@ -14,33 +14,31 @@ func main() {
 
 	data := make([]byte, daw.BufferLength(format))
 	v := int32(0)
-	mod := int32(12800000)
-	//mod := int32(6400000)
-	//mod := int32(7600000)
+	delta := int32(12800000) // 6400000, 7600000
 	samples := make([]int32, len(data)/4)
 	volume := int32(math.MaxInt32 / 4)
 	for i := range samples {
 		samples[i] = v
-		v += mod
+		v += delta
 		if v > volume || v < -volume {
-			mod *= -1
+			delta *= -1
 		}
 	}
 
-	bytesPerI32 := int(format.Channels) * 4
+	const i32Size = 4
+	bytesPerI32 := int(format.Channels) * i32Size
 	j := 0
 	for i := 0; i+bytesPerI32 <= len(data); i += bytesPerI32 {
-		i32 := samples[j]
+		i32 := samples[j] // []int32
 		j++
 		for c := 0; c < int(format.Channels); c++ {
-			// silence a channel
 			// if c == 1 {
-			// 	i32 = 0
+			// 	i32 = 0 // to silence channel 1
 			// }
-			data[i+(4*c)] = byte(i32)
-			data[i+(4*c)+1] = byte(i32 >> 8)
-			data[i+(4*c)+2] = byte(i32 >> 16)
-			data[i+(4*c)+3] = byte(i32 >> 24)
+			data[i+(i32Size*c)] = byte(i32)
+			data[i+(i32Size*c)+1] = byte(i32 >> 8)
+			data[i+(i32Size*c)+2] = byte(i32 >> 16)
+			data[i+(i32Size*c)+3] = byte(i32 >> 24)
 		}
 	}
 
