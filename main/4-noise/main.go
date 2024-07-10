@@ -10,7 +10,7 @@ import (
 func main() {
 	daw.VisualMain(func(w io.Writer) {
 		data := make([]byte, daw.BufferLength(daw.DefaultFormat))
-		const volume = 10
+		const volume = 70
 		for i := range data {
 			data[i] = byte((rand.Float64() - .5) * volume)
 		}

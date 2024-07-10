@@ -119,7 +119,7 @@ func main() {
 			pr := &daw.PitchReader{
 				Format:   format,
 				Pitch:    &pitch,
-				Volume:   0.02,
+				Volume:   .50,
 				WaveFunc: daw.SinFunc,
 			}
 			w := daw.NewWriter()

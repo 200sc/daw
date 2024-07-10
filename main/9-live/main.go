@@ -33,7 +33,7 @@ func main() {
 		go daw.Loop(w, &daw.PitchReader{
 			Format:   format,
 			Pitch:    pitch,
-			Volume:   0.05,
+			Volume:   0.50,
 			WaveFunc: daw.SinFunc,
 		})
 		time.Sleep(10 * time.Second)

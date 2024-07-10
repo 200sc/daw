@@ -21,7 +21,7 @@ func main() {
 
 	data := make([]byte, daw.BufferLength(format))
 	samples := make([]int32, len(data)/4)
-	volume := .10 * math.MaxInt32
+	volume := .50 * math.MaxInt32
 	for i := range samples {
 		v := math.Sin(phase(pitch, i, format.SampleRate))
 		samples[i] = int32((v * volume))

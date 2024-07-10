@@ -11,6 +11,6 @@ import (
 
 func main() {
 	daw.Main(func(w io.Writer) {
-		w.Write([]byte{5})
+		w.Write([]byte{20})
 	})
 }

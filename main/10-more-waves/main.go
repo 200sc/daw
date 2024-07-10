@@ -19,7 +19,7 @@ func main() {
 	pr := &daw.PitchReader{
 		Format: format,
 		Pitch:  pitch,
-		Volume: 0.05,
+		Volume: 0.50,
 		WaveFunc: func(pr *daw.PitchReader) float64 {
 			f := math.Sin(daw.ModPhase(*pr.Pitch, pr.Phase, pr.Format.SampleRate))
 			return f * pr.Volume

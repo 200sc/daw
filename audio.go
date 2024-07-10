@@ -134,7 +134,7 @@ func newPCMMonitor(ctx *scene.Context, w pcm.Writer) *pcmMonitor {
 		written:      make([]byte, int(float64(fmt.BytesPerSecond())*audio.WriterBufferLengthInSeconds)),
 	}
 	event.GlobalBind(ctx, mouse.Click, func(_ *mouse.Event) event.Response {
-		globalMagnification = 20
+		globalMagnification = 40
 		return 0
 	})
 	event.GlobalBind(ctx, mouse.ScrollDown, func(_ *mouse.Event) event.Response {

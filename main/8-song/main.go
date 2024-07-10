@@ -33,7 +33,7 @@ func main() {
 		pitch := pitch
 		for j := 0; j < len(vals)/len(pitches); j++ {
 			v := math.Sin(daw.ModPhase(pitch, i, format.SampleRate))
-			vals[i] = daw.VolumeI32(v, .05)
+			vals[i] = daw.VolumeI32(v, .50)
 			i++
 		}
 	}

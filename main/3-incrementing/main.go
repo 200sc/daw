@@ -15,16 +15,16 @@ func main() {
 func writeIncrementing(w io.Writer, size int) {
 	data := make([]byte, size)
 	for i := 0; i < size/4; i++ {
-		data[i] = 1
-	}
-	for i := size / 4; i < size/2; i++ {
 		data[i] = 10
 	}
+	for i := size / 4; i < size/2; i++ {
+		data[i] = 40
+	}
 	for i := size / 2; i < 3*size/4; i++ {
-		data[i] = 20
+		data[i] = 70
 	}
 	for i := 3 * size / 4; i < size; i++ {
-		data[i] = 30
+		data[i] = 100
 	}
 	w.Write(data)
 }

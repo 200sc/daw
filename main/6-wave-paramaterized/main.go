@@ -16,7 +16,7 @@ func main() {
 	v := int32(0)
 	delta := int32(12800000) // 6400000, 7600000
 	samples := make([]int32, len(data)/4)
-	volume := int32(math.MaxInt32 / 4)
+	volume := int32(math.MaxInt32 / 2)
 	for i := range samples {
 		samples[i] = v
 		v += delta

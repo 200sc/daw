@@ -21,7 +21,7 @@ func main() {
 		pr := &daw.PitchReader{
 			Format:   format,
 			Pitch:    &pitch,
-			Volume:   0.05,
+			Volume:   0.50,
 			WaveFunc: daw.SinFunc,
 		}
 		w := daw.NewWriter()
@@ -35,7 +35,7 @@ func main() {
 		pr := &daw.PitchReader{
 			Format:   format,
 			Pitch:    &pitch,
-			Volume:   0.05,
+			Volume:   0.50,
 			WaveFunc: daw.SinFunc,
 		}
 		w := daw.NewWriter()

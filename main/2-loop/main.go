@@ -11,7 +11,7 @@ func main() {
 		size := 100000
 		data := make([]byte, size)
 		for i := 0; i < size; i++ {
-			data[i] = 20
+			data[i] = 80
 		}
 		w.Write(data)
 	})
